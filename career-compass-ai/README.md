@@ -1,23 +1,16 @@
 # Career Compass AI
 
-A responsive MVP prototype for an AI-powered career discovery and application tracking platform.
+A responsive Vite + React prototype for Career Compass AI: an AI-powered career discovery and application tracking platform for university students and young professionals.
 
-## What it includes
+## Features
 
-- Homepage
-- Career DNA assessment form
-- Career Match dashboard with compass visual
-- Optional Bazi / Life Pattern insight card
+- Landing page
+- Career DNA behavioural assessment
+- Career Match results with compass dial visual
 - Career Explorer for Finance, Consulting and Technology roles
-- Skill Gap Analysis + 12-month Roadmap
-- Application Tracker with filtering and add-application modal
-
-## Tech stack
-
-- React
-- Vite
-- CSS
-- lucide-react icons
+- 12-month Roadmap
+- Application Tracker with add modal and filters
+- Optional Bazi insight framing as a secondary reflective layer
 
 ## Run locally
 
@@ -26,27 +19,23 @@ npm install
 npm run dev
 ```
 
-Then open the local URL shown in your terminal.
+Open the local URL shown in your terminal, usually `http://localhost:5173`.
 
-## Build for production
+## Build
 
 ```bash
 npm run build
 ```
 
-## Deploy to Vercel
+The production files will be generated in `dist/`.
 
-1. Push this folder to GitHub.
-2. Go to Vercel.
-3. Import the GitHub repo.
-4. Framework preset: Vite.
-5. Build command: `npm run build`.
-6. Output directory: `dist`.
+## Cloudflare Pages settings
 
-## Next steps
+Use these settings:
 
-- Add Supabase Auth
-- Save Career DNA responses to Supabase
-- Save applications to Supabase
-- Replace mock matching logic with OpenAI or rule-based scoring
-- Add real Bazi API later, keeping it optional and framed as reflective insight
+- Framework preset: `Vite`
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Root directory: `/` if `package.json` is at the top level of your repo
+
+If your files are inside a folder such as `career-compass-full`, set Root directory to that folder name.
