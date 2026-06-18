@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Compass AI</title>
+  <meta name="description" content="Career Compass AI helps students discover suitable career paths, understand skill gaps, and track applications." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy950:#060F1F; --navy900:#0B1F3A; --blue:#2F6FED; --blue2:#DCE7FB;
+      --mist:#F6F9FE; --ink:#0F172A; --slate:#475569; --muted:#5B6B82; --line:#E2E8F0; --white:#fff;
+      --shadow:0 24px 80px rgba(15,23,42,.10); --radius:28px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--mist);line-height:1.5}
+    a{color:inherit;text-decoration:none} button,input,select,textarea{font:inherit} .mono{font-family:'IBM Plex Mono',monospace}.display{font-family:'Space Grotesk',Inter,sans-serif}
+    .container{width:min(1180px,calc(100% - 40px));margin:auto}.pill{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(47,111,237,.18);background:#fff;border-radius:999px;padding:8px 12px;color:#1e4ea8;font-size:13px;font-weight:700}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(246,249,254,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(226,232,240,.9)}
+    .nav-inner{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px;font-weight:800}.logo{width:40px;height:40px;border-radius:14px;background:linear-gradient(135deg,var(--navy900),var(--blue));display:grid;place-items:center;color:white;box-shadow:0 10px 26px rgba(47,111,237,.25)}
+    .links{display:flex;align-items:center;gap:24px;color:#526176;font-size:14px;font-weight:700}.links a:hover{color:var(--blue)}.nav-cta{padding:10px 16px;border-radius:999px;background:var(--navy950);color:white;font-weight:800}
+    .hero{position:relative;overflow:hidden;background:radial-gradient(circle at 72% 18%,rgba(47,111,237,.35),transparent 24%),linear-gradient(135deg,#06101f 0%,#081a33 55%,#0b2448 100%);color:white;padding:96px 0 70px}
+    .hero:before{content:"";position:absolute;inset:-200px;background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(circle at 68% 18%,black,transparent 68%)}
+    .hero-grid{position:relative;display:grid;grid-template-columns:1.03fr .97fr;gap:54px;align-items:center}.hero h1{font-size:clamp(44px,7vw,82px);line-height:.95;margin:18px 0;font-weight:700;letter-spacing:-.055em}.hero p{font-size:19px;color:#cbd8ea;max-width:660px}.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}.btn{border:0;cursor:pointer;border-radius:999px;padding:14px 20px;font-weight:800;display:inline-flex;align-items:center;gap:10px;transition:.2s}.btn-primary{background:white;color:#071323}.btn-blue{background:var(--blue);color:white}.btn-ghost{background:rgba(255,255,255,.08);color:white;border:1px solid rgba(255,255,255,.18)}.btn:hover{transform:translateY(-2px)}
+    .hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 100px rgba(0,0,0,.35);border-radius:34px;padding:24px;backdrop-filter:blur(18px)}
+    .compass{position:relative;width:min(430px,100%);aspect-ratio:1;margin:auto;border-radius:50%;background:radial-gradient(circle,#10284b 0 8%,#0a1d39 9% 28%,#08182e 29% 56%,#071424 57%);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 0 60px rgba(47,111,237,.18)}
+    .compass:before,.compass:after{content:"";position:absolute;inset:12%;border:1px solid rgba(255,255,255,.12);border-radius:50%}.compass:after{inset:28%}.axis{position:absolute;background:rgba(255,255,255,.12)}.axis.v{width:1px;height:84%;top:8%;left:50%}.axis.h{height:1px;width:84%;left:8%;top:50%}.dir{position:absolute;font-family:'IBM Plex Mono';font-size:12px;color:#9db7df;font-weight:700}.n{top:16px;left:50%;transform:translateX(-50%)}.s{bottom:16px;left:50%;transform:translateX(-50%)}.e{right:18px;top:50%;transform:translateY(-50%)}.w{left:18px;top:50%;transform:translateY(-50%)}
+    .needle{position:absolute;width:3px;height:38%;left:50%;top:12%;background:linear-gradient(var(--blue),white);transform-origin:bottom center;transform:rotate(45deg);border-radius:99px;box-shadow:0 0 22px rgba(47,111,237,.9)}.dot{position:absolute;width:12px;height:12px;border-radius:50%;background:white;box-shadow:0 0 20px var(--blue)}.d1{left:66%;top:25%}.d2{left:27%;top:37%;background:#9cc0ff}.d3{left:58%;top:65%;background:#dce7fb}.centre{position:absolute;inset:42%;border-radius:50%;background:white;color:var(--navy950);display:grid;place-items:center;font-weight:900}.match-label{position:absolute;left:22px;bottom:24px;right:22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:14px}.match-label b{display:block}.match-label span{color:#bfd0e8;font-size:13px}
+    section{padding:86px 0}.section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;margin-bottom:32px}.section-head h2{font-family:'Space Grotesk';font-size:clamp(30px,4vw,48px);line-height:1.02;margin:0;letter-spacing:-.04em}.section-head p{max-width:520px;color:var(--slate);margin:0}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 12px 40px rgba(15,23,42,.05)}.card h3{font-family:'Space Grotesk';font-size:22px;margin:0 0 8px}.card p{color:var(--slate);margin:0}.icon{width:46px;height:46px;border-radius:16px;background:var(--blue2);display:grid;place-items:center;color:var(--blue);font-weight:900;margin-bottom:18px}.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.flow-step{background:white;border:1px solid var(--line);border-radius:20px;padding:16px;min-height:132px}.flow-step .num{font-family:'IBM Plex Mono';font-weight:800;color:var(--blue);font-size:13px}.flow-step b{display:block;margin:12px 0 8px}.flow-step span{font-size:13px;color:var(--muted)}
+    .app{background:#eef4ff}.app-shell{display:grid;grid-template-columns:290px 1fr;gap:22px;align-items:start}.sidebar{position:sticky;top:92px;background:var(--navy950);color:white;border-radius:32px;padding:20px;box-shadow:var(--shadow)}.side-link{display:flex;align-items:center;gap:10px;padding:13px 14px;border-radius:16px;color:#c7d6eb;font-weight:700;font-size:14px}.side-link.active,.side-link:hover{background:rgba(255,255,255,.1);color:white}.main-panel{display:grid;gap:18px}.panel{background:white;border:1px solid var(--line);border-radius:32px;padding:26px;box-shadow:var(--shadow)}.panel-title{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.panel-title h2{font-family:'Space Grotesk';font-size:32px;margin:0;letter-spacing:-.03em}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field label{display:block;font-weight:800;font-size:13px;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:#fbfdff;color:var(--ink)}.chips{display:flex;gap:10px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 13px;font-size:13px;font-weight:700;cursor:pointer}.chip.selected{background:var(--navy950);color:white;border-color:var(--navy950)}
+    .traits{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.trait{border:1px solid var(--line);border-radius:20px;padding:14px;background:#fbfdff}.trait .score{font-family:'IBM Plex Mono';font-size:24px;font-weight:800;color:var(--blue)}.bar{height:8px;background:#e8eef8;border-radius:999px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#86aef8);border-radius:999px}.matches{display:grid;gap:12px}.match{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;border:1px solid var(--line);border-radius:22px;padding:14px;background:#fff}.mini-dial{position:relative;width:58px;height:58px;border-radius:50%;background:#f2f6fd;border:1px solid #d9e4f6}.mini-dial:after{content:"";position:absolute;width:2px;height:22px;left:50%;top:8px;transform-origin:bottom;transform:rotate(var(--angle));background:var(--blue);border-radius:99px}.match b{display:block}.match p{font-size:13px;color:var(--slate);margin:2px 0 0}.percent{font-family:'IBM Plex Mono';font-weight:800;color:var(--blue);font-size:22px}.bazi{border:1px solid rgba(47,111,237,.25);background:linear-gradient(135deg,#fff,#eef5ff);border-radius:26px;padding:20px}.bazi h3{margin:0 0 8px;font-family:'Space Grotesk'}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:white;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}.tab.active{background:var(--blue);color:white;border-color:var(--blue)}.roles{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}.role-list{display:grid;gap:10px}.role-item{padding:16px;border-radius:20px;border:1px solid var(--line);background:#fff;cursor:pointer}.role-item.active{border-color:var(--blue);box-shadow:0 12px 30px rgba(47,111,237,.12)}.role-item b{display:block}.role-item span{color:var(--muted);font-size:13px}.detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.small-card{background:#f8fbff;border:1px solid var(--line);border-radius:20px;padding:16px}.small-card h4{margin:0 0 8px}.small-card ul{margin:0;padding-left:18px;color:var(--slate)}
+    .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.month{background:white;border:1px solid var(--line);border-radius:22px;padding:16px}.month .m{font-family:'IBM Plex Mono';color:var(--blue);font-weight:800;font-size:13px}.month b{display:block;margin:8px 0}.month span{font-size:13px;color:var(--muted)}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#fbfdff;border:1px solid var(--line);border-radius:20px;padding:16px}.metric span{display:block;color:var(--muted);font-size:13px;font-weight:700}.metric b{font-family:'IBM Plex Mono';font-size:28px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:22px}table{width:100%;border-collapse:collapse;background:white;min-width:760px}th,td{text-align:left;padding:15px;border-bottom:1px solid var(--line);font-size:14px}th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}tr:last-child td{border-bottom:0}.status{display:inline-flex;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800}.offer{background:#dcfce7;color:#166534}.interview{background:#dbeafe;color:#1d4ed8}.oa{background:#fef3c7;color:#92400e}.rejected{background:#fee2e2;color:#991b1b}.applied{background:#eef2ff;color:#4338ca}
+    .footer{background:var(--navy950);color:white;padding:60px 0}.footer p{color:#aab9cf}.cta-box{background:linear-gradient(135deg,var(--navy900),var(--blue));border-radius:34px;padding:42px;color:white;display:flex;justify-content:space-between;gap:24px;align-items:center}.cta-box h2{font-family:'Space Grotesk';font-size:40px;margin:0 0 10px}.cta-box p{color:#d8e4f7;margin:0;max-width:560px}
+    @media(max-width:920px){.links{display:none}.hero-grid,.app-shell,.roles{grid-template-columns:1fr}.grid-3,.traits,.metrics{grid-template-columns:repeat(2,1fr)}.flow,.roadmap{grid-template-columns:repeat(2,1fr)}.sidebar{position:static}.section-head,.cta-box{align-items:flex-start;flex-direction:column}.hero{padding-top:64px}.form-grid,.detail-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){.container{width:min(100% - 24px,1180px)}.hero h1{font-size:42px}.grid-3,.traits,.metrics,.flow,.roadmap{grid-template-columns:1fr}.panel,.hero-card,.card{border-radius:22px;padding:18px}.match{grid-template-columns:50px 1fr}.percent{grid-column:2}.nav-inner{height:64px}.cta-box h2{font-size:30px}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#home"><span class="logo">⌖</span><span>Career Compass AI</span></a>
+      <div class="links">
+        <a href="#dna">Career DNA</a><a href="#match">Matches</a><a href="#explorer">Explorer</a><a href="#tracker">Tracker</a><a class="nav-cta" href="#dna">Start free</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="container hero-grid">
+      <div>
+        <span class="pill" style="background:rgba(255,255,255,.1);color:#dce7fb;border-color:rgba(255,255,255,.16)">Behavioural-first career discovery · optional Bazi insight</span>
+        <h1 class="display">Discover who you are. Explore where to go.</h1>
+        <p>Career Compass AI helps ambitious students turn career confusion into a clear plan: assess your working style, compare finance/consulting/tech paths, identify skill gaps, and track applications.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#dna">Start your Career DNA →</a>
+          <a class="btn btn-ghost" href="#explorer">Browse career paths</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Career match compass preview">
+        <div class="compass">
+          <span class="axis v"></span><span class="axis h"></span><span class="dir n">N</span><span class="dir s">S</span><span class="dir e">E</span><span class="dir w">W</span>
+          <span class="needle"></span><span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="centre">92%</span>
+          <div class="match-label"><b>Investment Banking</b><span>High match · structured pace · analytical work</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>From vague ambition to a working plan.</h2>
+        <p>Most students know role names but not role realities. Career Compass connects personality, role fit, required skills and application execution.</p>
+      </div>
+      <div class="flow">
+        <div class="flow-step"><span class="num">01</span><b>Assess Yourself</b><span>Behavioural questions, interests, societies and optional birth details.</span></div>
+        <div class="flow-step"><span class="num">02</span><b>Get Matches</b><span>Ranked career paths with clear reasoning and fit signals.</span></div>
+        <div class="flow-step"><span class="num">03</span><b>Explore Roles</b><span>Compare finance, consulting and technology by daily work.</span></div>
+        <div class="flow-step"><span class="num">04</span><b>Find Gaps</b><span>See the difference between your profile and role requirements.</span></div>
+        <div class="flow-step"><span class="num">05</span><b>Build Roadmap</b><span>Month-by-month plan from skill building to applications.</span></div>
+        <div class="flow-step"><span class="num">06</span><b>Track Results</b><span>Manage deadlines, interviews, offers and conversion rates.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app" id="dna">
+    <div class="container app-shell">
+      <aside class="sidebar">
+        <a class="side-link active" href="#dna">⌁ Career DNA</a>
+        <a class="side-link" href="#match">⌖ Career Match</a>
+        <a class="side-link" href="#explorer">▣ Career Explorer</a>
+        <a class="side-link" href="#roadmap">◷ Roadmap</a>
+        <a class="side-link" href="#tracker">☷ Application Tracker</a>
+      </aside>
+      <main class="main-panel">
+        <section class="panel" style="padding-top:26px">
+          <div class="panel-title"><h2>Career DNA assessment</h2><span class="pill">Live prototype</span></div>
+          <div class="form-grid">
+            <div class="field"><label>Name</label><input id="name" placeholder="e.g. Junjia" value="Mina" /></div>
+            <div class="field"><label>University</label><input placeholder="e.g. LSE" value="London School of Economics" /></div>
+            <div class="field"><label>Degree</label><input placeholder="e.g. BSc Economics" value="BSc Economics" /></div>
+            <div class="field"><label>Year of study</label><select><option>First year</option><option selected>Second year</option><option>Final year</option><option>Graduate</option></select></div>
+          </div>
+          <div style="height:18px"></div>
+          <div class="field"><label>Choose your interests</label>
+            <div class="chips" id="chips">
+              <button class="chip selected">Markets / Investing</button><button class="chip selected">Problem Solving</button><button class="chip">Building Products</button><button class="chip selected">Data / Numbers</button><button class="chip">Public Speaking</button><button class="chip">Writing / Research</button>
+            </div>
+          </div>
+          <div style="height:18px"></div>
+          <div class="form-grid">
+            <div class="field"><label>Data vs people</label><select id="q1"><option value="data" selected>I prefer data and analysis</option><option value="people">I prefer people and relationships</option><option value="both">Both equally</option></select></div>
+            <div class="field"><label>Structure vs flexibility</label><select id="q2"><option value="structure" selected>I like clear structure</option><option value="flex">I like ambiguity and flexibility</option><option value="both">A balance</option></select></div>
+            <div class="field"><label>Competition preference</label><select id="q3"><option value="high" selected>High-performance competition energises me</option><option value="low">I prefer low-pressure collaboration</option></select></div>
+            <div class="field"><label>Open-ended problems</label><select id="q4"><option value="yes" selected>I enjoy solving ambiguous problems</option><option value="no">I prefer defined tasks</option></select></div>
+          </div>
+          <div style="height:18px"></div>
+          <button class="btn btn-blue" onclick="generateDNA()">Generate Career DNA</button>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title"><h2>Your Career DNA</h2><span class="mono" id="updated">Updated now</span></div>
+          <div class="traits" id="traits"></div>
+          <div class="grid-3" style="margin-top:18px">
+            <div class="small-card"><h4>Strengths</h4><ul id="strengths"></ul></div>
+            <div class="small-card"><h4>Development areas</h4><ul id="gaps"></ul></div>
+            <div class="bazi"><h3>Optional Bazi layer</h3><p style="color:var(--slate);margin:0 0 14px">Add birth details as one self-reflection input, not a prediction.</p><button class="btn btn-blue" onclick="showBazi()">Add Bazi insight</button><p id="baziText" style="margin-top:14px;color:var(--slate)"></p></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </section>
+
+  <section id="match">
+    <div class="container">
+      <div class="section-head"><h2>Career matches plotted like bearings.</h2><p>Match strength is shown alongside expected work style, required skills and plain-English reasoning.</p></div>
+      <div class="grid-3">
+        <div class="card" style="grid-column:span 1"><div class="icon">⌖</div><h3>Compass logic</h3><p>Distance and angle make matches feel distinctive, not like generic quiz bars.</p></div>
+        <div class="card" style="grid-column:span 2"><div class="matches" id="matches"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app" id="explorer">
+    <div class="container">
+      <div class="section-head"><h2>Career Explorer</h2><p>Browse roles by industry and understand what each career actually requires.</p></div>
+      <div class="panel">
+        <div class="tabs"><button class="tab active" onclick="setIndustry('Finance',this)">Finance</button><button class="tab" onclick="setIndustry('Consulting',this)">Consulting</button><button class="tab" onclick="setIndustry('Technology',this)">Technology</button></div>
+        <div class="roles">
+          <div class="role-list" id="roleList"></div>
+          <div class="card" id="roleDetail"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="container">
+      <div class="section-head"><h2>Skill gaps become a 12-month roadmap.</h2><p>The MVP shows recommended next actions for a chosen target path, starting with Investment Banking.</p></div>
+      <div class="panel">
+        <div class="panel-title"><h2>Target: Investment Banking</h2><button class="btn btn-blue">Change target</button></div>
+        <div class="detail-grid" style="margin-bottom:18px">
+          <div class="small-card"><h4>Skill gap analysis</h4><p style="color:var(--slate)">Your profile suggests strong analytical potential, but accounting and valuation need targeted practice.</p><div class="trait"><b>Accounting</b><div class="bar"><i style="width:32%"></i></div></div><div class="trait" style="margin-top:10px"><b>Valuation</b><div class="bar"><i style="width:24%"></i></div></div></div>
+          <div class="small-card"><h4>Priority actions</h4><ul><li>Complete accounting fundamentals.</li><li>Build a 3-statement model.</li><li>Network with 15 alumni.</li><li>Prepare technical interview answers.</li></ul></div>
+        </div>
+        <div class="roadmap" id="roadmapGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app" id="tracker">
+    <div class="container">
+      <div class="section-head"><h2>Application Tracker</h2><p>Manage your pipeline and learn which industries convert best for you.</p></div>
+      <div class="panel">
+        <div class="panel-title"><h2>Pipeline dashboard</h2><button class="btn btn-blue" onclick="addApplication()">+ Add sample application</button></div>
+        <div class="metrics" id="metrics"></div>
+        <div style="height:18px"></div>
+        <div class="table-wrap"><table><thead><tr><th>Company</th><th>Position</th><th>Industry</th><th>Applied</th><th>Deadline</th><th>Status</th></tr></thead><tbody id="appRows"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container cta-box">
+      <div><h2>Ready for the next prototype?</h2><p>This static MVP can become React + Supabase later. First, use it to test whether students understand and want the product.</p></div>
+      <a class="btn btn-primary" href="#dna">Test the flow</a>
+    </div>
+  </section>
+
+  <footer class="footer"><div class="container"><b class="brand"><span class="logo">⌖</span><span>Career Compass AI</span></b><p>Behavioural-first career discovery with optional Bazi insight. Built for students who want clarity and a plan.</p></div></footer>
+
+  <script>
+    const traitBase = [
+      ['Analytical Thinking',90],['Leadership',84],['Communication',78],['Risk Appetite',74],['Creativity',66]
+    ];
+    const matches = [
+      {role:'Investment Banking',pct:92,angle:'45deg',why:'Strong fit for analytical thinking, structure, pace and high-stakes execution.',skills:'Accounting · Valuation · Excel · PowerPoint'},
+      {role:'Management Consulting',pct:89,angle:'300deg',why:'High fit for ambiguous problem solving, communication and structured thinking.',skills:'Problem solving · Storylining · Data analysis'},
+      {role:'Private Equity',pct:85,angle:'25deg',why:'Good fit after building transaction experience and commercial judgment.',skills:'Deal analysis · Modelling · Market research'},
+      {role:'Product Management',pct:78,angle:'120deg',why:'Moderate-high fit if product curiosity and user empathy are developed.',skills:'User research · Strategy · Execution'},
+      {role:'Software Engineering',pct:55,angle:'210deg',why:'Lower current fit unless technical building becomes a deliberate focus.',skills:'Programming · Systems thinking · Testing'}
+    ];
+    const roles = {
+      Finance:[
+        ['Investment Banking','Advises companies on M&A, IPOs and capital raising.','Model valuation scenarios, build pitchbooks, join client calls and manage deadlines.','London: £60k-£80k base; US often higher.','Accounting, Valuation, Excel, PowerPoint, stamina'],
+        ['Private Equity','Invests in private companies and improves them over time.','Screen deals, analyse markets, review CIMs, build LBO models and discuss value creation.','Entry often post-IB; analyst routes vary.','Financial modelling, Commercial judgement, Research'],
+        ['Asset Management','Manages portfolios across equities, fixed income and alternatives.','Monitor markets, research securities, write investment notes and discuss positioning.','London graduate roles vary by firm.','Markets, Research writing, Portfolio thinking'],
+        ['Hedge Funds','Seeks absolute returns through active investment strategies.','Generate ideas, test theses, monitor risk and update PMs quickly.','Highly variable, performance-linked.','Market intuition, Analysis, Risk management'],
+        ['Quant Trading','Uses maths, statistics and code to trade systematically.','Build models, test signals, analyse execution and manage risk.','Very competitive, high upside.','Python, Statistics, Probability, Speed'],
+        ['Equity Research','Produces company and sector research for investors.','Update models, write notes, speak to management and explain recommendations.','Bank and asset manager roles vary.','Accounting, Writing, Sector expertise']
+      ],
+      Consulting:[
+        ['Strategy Consulting','Solves high-level business problems for executives.','Interview stakeholders, analyse data, build slides and present recommendations.','London: often £45k-£60k+ for graduates.','Problem solving, Communication, Excel, Slides'],
+        ['Operations Consulting','Improves processes, costs and execution inside organisations.','Map processes, find bottlenecks, design operating models and implementation plans.','Varies by firm and region.','Process thinking, Data analysis, Stakeholder management'],
+        ['Technology Consulting','Helps organisations implement technology and digital transformation.','Translate business needs, design systems, manage delivery and explain trade-offs.','Strong demand across regions.','Tech literacy, Communication, Project management']
+      ],
+      Technology:[
+        ['Product Management','Builds products by connecting users, business goals and engineering.','Prioritise roadmap, write specs, analyse metrics and coordinate teams.','Graduate PM routes are competitive.','User research, Strategy, Analytics, Communication'],
+        ['Software Engineering','Designs, builds and maintains software systems.','Write code, review pull requests, debug systems and ship features.','Strong compensation in US/UK tech firms.','Programming, Algorithms, Testing, Systems'],
+        ['Data Science','Uses data to generate insight, prediction and product decisions.','Clean data, build models, run experiments and communicate findings.','Varies by industry and technical depth.','Python, Statistics, ML, Communication']
+      ]
+    };
+    let applications = [
+      ['Goldman Sachs','Summer Analyst','Finance','2026-01-12','2026-02-01','OA'],
+      ['McKinsey','Business Analyst Intern','Consulting','2026-01-18','2026-02-08','Interview'],
+      ['Revolut','Product Intern','Technology','2026-01-20','2026-02-20','Applied'],
+      ['Blackstone','PE Summer Analyst','Finance','2026-01-28','2026-02-14','Rejected'],
+      ['Point72','Academy Analyst','Finance','2026-02-02','2026-02-28','Offer']
+    ];
+    function generateDNA(){
+      const q1=document.getElementById('q1').value, q2=document.getElementById('q2').value, q3=document.getElementById('q3').value, q4=document.getElementById('q4').value;
+      let data=[...traitBase].map(x=>[...x]);
+      if(q1==='people'){data[0][1]-=14;data[2][1]+=12} if(q2==='flex'){data[4][1]+=10;data[0][1]-=4} if(q3==='low'){data[3][1]-=18;data[2][1]+=4} if(q4==='yes'){data[0][1]+=4;data[1][1]+=4}
+      renderTraits(data); document.getElementById('updated').textContent='Updated ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    }
+    function renderTraits(data){
+      document.getElementById('traits').innerHTML=data.map(([n,s])=>`<div class="trait"><span>${n}</span><div class="score">${Math.max(0,Math.min(100,s))}</div><div class="bar"><i style="width:${s}%"></i></div></div>`).join('');
+      document.getElementById('strengths').innerHTML=['Strategic thinking','Fast learning','Structured execution'].map(x=>`<li>${x}</li>`).join('');
+      document.getElementById('gaps').innerHTML=['Delegation','Patience with slow processes','Consistency under ambiguity'].map(x=>`<li>${x}</li>`).join('');
+    }
+    function renderMatches(){document.getElementById('matches').innerHTML=matches.map(m=>`<div class="match"><span class="mini-dial" style="--angle:${m.angle}"></span><div><b>${m.role}</b><p>${m.why}</p><p class="mono">${m.skills}</p></div><span class="percent">${m.pct}%</span></div>`).join('')}
+    function setIndustry(name,btn){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); if(btn)btn.classList.add('active'); const list=roles[name]; document.getElementById('roleList').innerHTML=list.map((r,i)=>`<div class="role-item ${i===0?'active':''}" onclick="selectRole('${name}',${i},this)"><b>${r[0]}</b><span>${r[1]}</span></div>`).join(''); selectRole(name,0)}
+    function selectRole(name,i,el){document.querySelectorAll('.role-item').forEach(x=>x.classList.remove('active')); if(el)el.classList.add('active'); const r=roles[name][i]; document.getElementById('roleDetail').innerHTML=`<span class="pill">${name}</span><h3 style="font-size:30px;margin-top:14px">${r[0]}</h3><p>${r[1]}</p><div class="detail-grid" style="margin-top:18px"><div class="small-card"><h4>Typical day</h4><p style="color:var(--slate)">${r[2]}</p></div><div class="small-card"><h4>Compensation</h4><p style="color:var(--slate)">${r[3]}</p></div><div class="small-card" style="grid-column:1/-1"><h4>Required skills</h4><p style="color:var(--slate)">${r[4]}</p></div></div>`}
+    function renderRoadmap(){const months=['September','October','November','December','January','February','March','April']; const tasks=['Learn financial modelling','Accounting deep-dive','Build CV and story bank','Networking and firm research','Submit applications','Online assessments','Final rounds','Reflect and iterate']; document.getElementById('roadmapGrid').innerHTML=months.map((m,i)=>`<div class="month"><span class="m">${m}</span><b>${tasks[i]}</b><span>${i<4?'Preparation phase':'Recruiting phase'}</span></div>`).join('')}
+    function renderApps(){
+      const decided=applications.filter(a=>['Offer','Rejected'].includes(a[5])).length || 1, offers=applications.filter(a=>a[5]==='Offer').length;
+      const interviews=applications.filter(a=>['Interview','Final Round','Offer'].includes(a[5])).length;
+      document.getElementById('metrics').innerHTML=[['Applications',applications.length],['Interviews',interviews],['Offers',offers],['Success rate',Math.round(offers/decided*100)+'%']].map(x=>`<div class="metric"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('');
+      document.getElementById('appRows').innerHTML=applications.map(a=>`<tr><td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td><td>${a[3]}</td><td>${a[4]}</td><td><span class="status ${a[5].toLowerCase().replace(' ','')}">${a[5]}</span></td></tr>`).join('')
+    }
+    function addApplication(){applications.unshift(['Jane Street','Trading Intern','Finance','2026-02-10','2026-03-01','Interested']);renderApps()}
+    function showBazi(){document.getElementById('baziText').innerHTML='<b>Sample insight:</b> Your profile is shown as Metal-leaning in this demo: structured, precise and independent. Use this alongside behavioural data, not instead of it.'}
+    document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('selected')));
+    renderTraits(traitBase); renderMatches(); setIndustry('Finance'); renderRoadmap(); renderApps();
+  </script>
+</body>
+</html>
